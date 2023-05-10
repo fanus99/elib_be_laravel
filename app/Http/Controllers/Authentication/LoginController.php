@@ -45,7 +45,7 @@ class LoginController extends Controller
               ->where('IdUser', $user->IdUser)
               ->update(['remember_token' => $apikey]);
 
-        if($savetoken) return response()->json(['status'=>'Login Success','token'=>$apikey]);
+        if($savetoken) return response()->json(['status'=>'Login Success','access_token'=>$apikey]);
     }
 
     public function CheckHash($passinput, $passdb)

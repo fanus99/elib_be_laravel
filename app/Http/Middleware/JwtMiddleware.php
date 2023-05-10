@@ -14,7 +14,7 @@ class JwtMiddleware
 {
     public function handle($request, Closure $next, $guard = null)
     {
-        $token = $request->header('api_key');
+        $token = $request->header('access_token');
         $key = env('JWT_SECRET');
 
         if(!$token) {
