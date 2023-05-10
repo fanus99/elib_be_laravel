@@ -1,3 +1,7 @@
+Important Notes : 
+Auth using JWT Token, each request must include header api_key = jwt_token when u get at login session
+
+
 # Lumen PHP Framework
 
 [![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
