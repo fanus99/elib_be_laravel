@@ -12,11 +12,15 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
-$router->post('login', ['uses' => 'LoginController@authenticate', 'as' => 'login']);
 
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+$router->group(['prefix' => 'auth'], function() use ($router)
+{
+    $router->post('login', ['uses' => 'Authentication\LoginController@authenticate', 'as' => 'login']);
+});
+
 
 $router->group(['middleware' => 'jwt.auth'], function () use ($router) {
 
@@ -25,7 +29,4 @@ $router->group(['middleware' => 'jwt.auth'], function () use ($router) {
         $router->get('/', ['uses' => 'KelasController@test', 'as' => 'index']);
     });
 
-    // $router->get('user/profile', function () {
-    //     // Uses Auth Middleware
-    // });
 });

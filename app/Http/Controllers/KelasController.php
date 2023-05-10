@@ -7,6 +7,8 @@ use DB;
 use Illuminate\Support\Facades\Hash;
 use Carbon;
 use Illuminate\Support\Str;
+use App\Http\Responses\ApiSuccessResponse;
+use Illuminate\Http\Response;
 
 class KelasController extends Controller
 {
@@ -19,7 +21,10 @@ class KelasController extends Controller
 
     public function test()
     {
-        return response()->json(['status' => 'success','msg' => $this->getuser]);
-        return response()->json(['status' => 'success','msg' => 'anda telah login']);
+        return new ApiSuccessResponse(
+            $this->getuser,
+            ['message' => 'User was created successfully'],
+            Response::HTTP_OK
+        );
     }
 }
