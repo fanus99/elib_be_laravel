@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('role');
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('phone_verified_at')->nullable();
-            $table->string('remember_token', 255);
+            $table->string('remember_token', 255)->nullable();
             $table->timestamps();
             $table->integer('Tenant')->unsigned();
             $table->foreign('Tenant')->references('IdTenand')->on('Auth.AppTenant');

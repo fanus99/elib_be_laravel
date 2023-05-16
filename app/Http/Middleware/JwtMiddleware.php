@@ -8,10 +8,18 @@ use App\Models\User;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Firebase\JWT\ExpiredException;
+use App\Http\Services\UserService;
 use DB;
 
 class JwtMiddleware
 {
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     public function handle($request, Closure $next, $guard = null)
     {
         $token = $request->header('access_token');
@@ -35,7 +43,7 @@ class JwtMiddleware
             ], 400);
         }
 
-        $user = DB::table('Auth.AppUser')->where('IdUser', $credentials->sub)->first();
+        $user = $this->userService->GetUserById($credentials->sub);
 
         $request->auth = $user;
 

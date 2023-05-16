@@ -24,7 +24,7 @@ class KelasController extends Controller
         return new ApiSuccessResponse(
             $this->getuser,
             ['message' => 'User was created successfully'],
-            Response::HTTP_OK
+            Response::HTTP_OK //HTTP_CREATED
         );
     }
 }

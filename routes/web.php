@@ -18,7 +18,8 @@ $router->get('/', function () use ($router) {
 });
 $router->group(['prefix' => 'auth'], function() use ($router)
 {
-    $router->post('login', ['uses' => 'Authentication\LoginController@authenticate', 'as' => 'login']);
+    $router->post('login', ['uses' => 'AuthController@authenticate', 'as' => 'login']);
+    $router->post('register', ['uses' => 'AuthController@register', 'as' => 'register']);
 });
 
 
