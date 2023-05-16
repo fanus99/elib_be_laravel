@@ -3,7 +3,7 @@
 namespace App\Models;
 
 
-class LicenseRes
+class UniversalResponse
 {
     public $statusres;
     public $msg;

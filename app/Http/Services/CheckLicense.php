@@ -3,13 +3,13 @@
 namespace App\Http\Services;
 use DB;
 use Carbon;
-use App\Models\LicenseRes;
+use App\Models\UniversalResponse;
 
 class CheckLicense extends CheckHash
 {
     public function CheckLicense($tenantId){
         $tenant = DB::table('Auth.AppTenant')->where('IdTenand', $tenantId)->first();
-        $returnres = new LicenseRes();
+        $returnres = new UniversalResponse();
         $returnres->statusres = true;
         $returnres->msg = "Valid";
 

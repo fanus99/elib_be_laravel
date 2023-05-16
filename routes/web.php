@@ -20,6 +20,7 @@ $router->group(['prefix' => 'auth'], function() use ($router)
 {
     $router->post('login', ['uses' => 'AuthController@authenticate', 'as' => 'login']);
     $router->post('register', ['uses' => 'AuthController@register', 'as' => 'register']);
+    $router->post('refresh-token', ['uses' => 'AuthController@refreshToken', 'as' => 'refresh-token']);
 });
 
 

@@ -3,20 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use DB;
-use Illuminate\Support\Facades\Hash;
-use Carbon;
-use Illuminate\Support\Str;
-use Firebase\JWT\JWT;
-use Firebase\JWT\ExpiredException;
 use App\Http\Services\JWTService;
 use App\Http\Services\UserService;
 use App\Http\Responses\ApiSuccessResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
+use Firebase\JWT\JWT;
+use Firebase\JWT\ExpiredException;
 use App\DTOs\LoginDTo;
 use App\DTOs\RegisterDTo;
-
+use App\DTOs\RefreshTokenDTo;
+use Carbon;
+use DB;
 
 class AuthController extends Controller
 {
@@ -95,8 +95,10 @@ class AuthController extends Controller
         );
     }
 
-    public function refreshToken()
+    public function refreshToken(RefreshTokenDTo $request)
     {
+        $refreshToken = $this->jwtService->isValidRefreshToken($request->get('access_token'), $request->get('refresh_token'));
 
+        return $refreshToken;
     }
 }
