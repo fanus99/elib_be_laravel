@@ -54,6 +54,4 @@ $router->group(['middleware' => 'jwt.auth'], function () use ($router) {
             $router->delete('/{id}', ['uses' => 'SemesterController@delete', 'as' => 'delete']);
         });
     });
-
-
 });
