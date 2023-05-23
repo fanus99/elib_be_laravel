@@ -1,9 +1,11 @@
 Important Notes : 
-- After clone project, add new schema on your pstgre with name "Auth"
+- After clone project, add new schema on your pstgre with name "Auth" and "Master"
 - Migarte database "php artisan migrate"
 - Run seeder for generate data userlogin "php artisan db:seed"
 - Auth using JWT Token, each request must include header access_token = jwt_token when u get at login session
 
+run projek
+php -S localhost:8001 -t public 
 
 # Lumen PHP Framework
 
