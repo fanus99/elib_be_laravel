@@ -4,6 +4,8 @@ Important Notes :
 - Run seeder for generate data userlogin "php artisan db:seed"
 - Auth using JWT Token, each request must include header access_token = jwt_token when u get at login session
 
+run projek
+php -S localhost:8001 -t public 
 
 # Lumen PHP Framework
 
