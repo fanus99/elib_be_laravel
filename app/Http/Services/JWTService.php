@@ -18,7 +18,7 @@ class JWTService
         $this->userService = $userService;
     }
 
-    function generatejwt($user) {
+    public function generatejwt($user) {
         $key = env('JWT_SECRET');
 
         $payload = [
@@ -37,7 +37,7 @@ class JWTService
         return $token;
     }
 
-    function generateRefreshToken(){
+    public function generateRefreshToken(){
         return base64_encode(Str::random(30));
     }
 
@@ -49,7 +49,7 @@ class JWTService
             return $affected;
     }
 
-    function updateRefreshToken($idUser, $refreshToken){
+    public function updateRefreshToken($idUser, $refreshToken){
         $createdAt = Carbon\Carbon::now();
         $expiredAt = Carbon\Carbon::now()->addDays(5);
         $affected = DB::table('Auth.AppRefreshToken')
@@ -61,7 +61,7 @@ class JWTService
         return $affected;
     }
 
-    function isValidRefreshToken($accessToken, $refreshToken){
+    public function isValidRefreshToken($accessToken, $refreshToken){
         $IdUser = $this->getUserIdFromToken($accessToken);
         $refreshToken = DB::table('Auth.AppRefreshToken')->where([['user',$IdUser],['RefreshToken',$refreshToken]])->first();
 
@@ -89,7 +89,7 @@ class JWTService
         return response()->json($returnres);
     }
 
-    function getUserIdFromToken($accessToken){
+    public function getUserIdFromToken($accessToken){
         $key = env('JWT_SECRET');
         $credentials = JWT::decode($accessToken, new Key($key, 'HS256'));
 

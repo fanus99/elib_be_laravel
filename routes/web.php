@@ -25,10 +25,35 @@ $router->group(['prefix' => 'auth'], function() use ($router)
 
 
 $router->group(['middleware' => 'jwt.auth'], function () use ($router) {
-
-    $router->group(['prefix' => 'kelas'], function() use ($router)
+    $router->group(['prefix' => 'master'], function() use ($router)
     {
-        $router->get('/', ['uses' => 'KelasController@test', 'as' => 'index']);
+        $router->group(['prefix' => 'kelas'], function() use ($router)
+        {
+            $router->get('/', ['uses' => 'KelasController@GetAll', 'as' => 'GetAll']);
+            $router->get('/{id}', ['uses' => 'KelasController@GetById', 'as' => 'GetById']);
+            $router->post('/', ['uses' => 'KelasController@create', 'as' => 'create']);
+            $router->put('/{id}', ['uses' => 'KelasController@update', 'as' => 'update']);
+            $router->delete('/{id}', ['uses' => 'KelasController@delete', 'as' => 'delete']);
+        });
+
+        $router->group(['prefix' => 'siswa'], function() use ($router)
+        {
+            $router->get('/', ['uses' => 'SiswaController@GetAll', 'as' => 'GetAll']);
+            $router->get('/{id}', ['uses' => 'SiswaController@GetById', 'as' => 'GetById']);
+            $router->post('/', ['uses' => 'SiswaController@create', 'as' => 'create']);
+            $router->put('/{id}', ['uses' => 'SiswaController@update', 'as' => 'update']);
+            $router->delete('/{id}', ['uses' => 'SiswaController@delete', 'as' => 'delete']);
+        });
+
+        $router->group(['prefix' => 'semester'], function() use ($router)
+        {
+            $router->get('/', ['uses' => 'SemesterController@GetAll', 'as' => 'GetAll']);
+            $router->get('/{id}', ['uses' => 'SemesterController@GetById', 'as' => 'GetById']);
+            $router->post('/', ['uses' => 'SemesterController@create', 'as' => 'create']);
+            $router->put('/{id}', ['uses' => 'SemesterController@update', 'as' => 'update']);
+            $router->delete('/{id}', ['uses' => 'SemesterController@delete', 'as' => 'delete']);
+        });
     });
+
 
 });

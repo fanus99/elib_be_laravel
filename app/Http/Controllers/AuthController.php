@@ -20,8 +20,8 @@ use DB;
 
 class AuthController extends Controller
 {
-    protected $jwtService;
-    protected $userService;
+    private $jwtService;
+    private $userService;
 
     public function __construct(JWTService $jwtService, UserService $userService)
     {

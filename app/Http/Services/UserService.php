@@ -7,7 +7,7 @@ use App\DTOs\RegisterDTo;
 use App\Http\Services\TenantService;
 use Carbon;
 
-class UserService extends CheckLicense
+class UserService extends UserSecurity
 {
     protected $tenantService;
 
