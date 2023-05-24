@@ -37,7 +37,7 @@ class SemesterService
     }
 
     public function CreateSemester($tenant, $request){
-        $checkDuplicate = $this->CheckDuplicate($tenant, $request);
+        $checkDuplicate = $this->CheckDuplicateCreate($tenant, $request);
 
         if($checkDuplicate->statusres != true){
             return $checkDuplicate;
@@ -52,8 +52,24 @@ class SemesterService
         return $this->GetSemesterById($tenant, $lastInsertId);
     }
 
+    public function CheckDuplicateCreate($tenant, $request){
+        $returnres = new UniversalResponse();
+        $returnres->statusres = true;
+
+        $getSemester = $this->GetSemesterByName($tenant, $request->get('TahunAjaran'), $request->get('Semester'));
+
+        if($getSemester != null){
+            $returnres->statusres = false;
+            $returnres->msg = "Data duplicate";
+
+            return $returnres;
+        }
+
+        return $returnres;
+    }
+
     public function UpdateSemester($tenant, $id, $request){
-        $checkDuplicate = $this->CheckDuplicate($tenant, $request, $id);
+        $checkDuplicate = $this->CheckDuplicateUpdate($tenant, $request, $id);
 
         if($checkDuplicate->statusres != true){
             return $checkDuplicate;
@@ -69,27 +85,20 @@ class SemesterService
         return $this->GetSemesterById($tenant, $id);
     }
 
-    public function CheckDuplicate($tenant, $request, $id = null){
+    public function CheckDuplicateUpdate($tenant, $request, $id){
         $returnres = new UniversalResponse();
         $returnres->statusres = true;
+        $getSemester = $this->GetSemesterById($tenant, $id);
 
-        $getSemester = $this->GetSemesterByName($tenant, $request->get('TahunAjaran'), $request->get('Semester'));
-
-        if($id != null){
-            if($getSemester == null){
-                $returnres->statusres = false;
-                $returnres->msg = "Data not Found";
-            }else{
-                if($getSemester->IdSemester != $id){
-                    $returnres->statusres = false;
-                    $returnres->msg = "Data duplicate";
-                }
-            }
+        if($getSemester == null){
+            $returnres->statusres = false;
+            $returnres->msg = "Data not Found";
 
             return $returnres;
         }
 
-        if($getSemester != null){
+        $getDuplicateData = $this->GetSemesterByName($tenant, $request->get('TahunAjaran'), $request->get('Semester'));
+        if($getDuplicateData->IdSemester != $id){
             $returnres->statusres = false;
             $returnres->msg = "Data duplicate";
 

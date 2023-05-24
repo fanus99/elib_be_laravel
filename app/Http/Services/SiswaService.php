@@ -36,7 +36,7 @@ class SiswaService
     }
 
     public function CreateSiswa($tenant, $request){
-        $checkDuplicate = $this->CheckDuplicate($tenant, $request);
+        $checkDuplicate = $this->CheckDuplicateCreate($tenant, $request);
 
         if($checkDuplicate->statusres != true){
             return $checkDuplicate;
@@ -51,8 +51,24 @@ class SiswaService
         return $this->GetSiswaById($tenant, $lastInsertId);
     }
 
+    public function CheckDuplicateCreate($tenant, $request){
+        $returnres = new UniversalResponse();
+        $returnres->statusres = true;
+
+        $getSiswa = $this->GetSiswaByNIS($tenant, $request->get('NIS'));
+
+        if($getSiswa != null){
+            $returnres->statusres = false;
+            $returnres->msg = "Data duplicate";
+
+            return $returnres;
+        }
+
+        return $returnres;
+    }
+
     public function UpdateSiswa($tenant, $id, $request){
-        $checkDuplicate = $this->CheckDuplicate($tenant, $request, $id);
+        $checkDuplicate = $this->CheckDuplicateUpdate($tenant, $request, $id);
 
         if($checkDuplicate->statusres != true){
             return $checkDuplicate;
@@ -68,27 +84,21 @@ class SiswaService
         return $this->GetSiswaById($tenant, $id);
     }
 
-    public function CheckDuplicate($tenant, $request, $id = null){
+    public function CheckDuplicateUpdate($tenant, $request, $id = null){
         $returnres = new UniversalResponse();
         $returnres->statusres = true;
+        $getSiswa = $this->GetSiswaById($tenant, $id);
 
-        $getSiswa = $this->GetSiswaByNIS($tenant, $request->get('NIS'));
-
-        if($id != null){
-            if($getSiswa == null){
-                $returnres->statusres = false;
-                $returnres->msg = "Data not Found";
-            }else{
-                if($getSiswa->IdSiswa != $id){
-                    $returnres->statusres = false;
-                    $returnres->msg = "Data duplicate";
-                }
-            }
+        if($getSiswa == null){
+            $returnres->statusres = false;
+            $returnres->msg = "Data not Found";
 
             return $returnres;
         }
 
-        if($getSiswa != null){
+        $getDuplicateData = $this->GetSiswaByNIS($tenant, $request->get('NIS'));
+
+        if($getDuplicateData->IdSiswa != $id){
             $returnres->statusres = false;
             $returnres->msg = "Data duplicate";
 

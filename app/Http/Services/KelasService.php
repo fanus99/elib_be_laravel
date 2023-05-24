@@ -37,7 +37,7 @@ class KelasService
     }
 
     public function CreateKelas($tenant, $request){
-        $checkDuplicate = $this->CheckDuplicate($tenant, $request);
+        $checkDuplicate = $this->CheckDuplicatePost($tenant, $request);
 
         if($checkDuplicate->statusres != true){
             return $checkDuplicate;
@@ -52,8 +52,24 @@ class KelasService
         return $this->GetKelasById($tenant, $lastInsertId);
     }
 
+    public function CheckDuplicateCreate($tenant, $request){
+        $returnres = new UniversalResponse();
+        $returnres->statusres = true;
+
+        $getKelas = $this->GetKelasByName($tenant, $request->get('Grade'), $request->get('Rombel'));
+
+        if($getKelas != null){
+            $returnres->statusres = false;
+            $returnres->msg = "Data duplicate";
+
+            return $returnres;
+        }
+
+        return $returnres;
+    }
+
     public function UpdateKelas($tenant, $id, $request){
-        $checkDuplicate = $this->CheckDuplicate($tenant, $request, $id);
+        $checkDuplicate = $this->CheckDuplicateUpdate($tenant, $request, $id);
 
         if($checkDuplicate->statusres != true){
             return $checkDuplicate;
@@ -69,27 +85,20 @@ class KelasService
         return $this->GetKelasById($tenant, $id);
     }
 
-    public function CheckDuplicate($tenant, $request, $id = null){
+    public function CheckDuplicateUpdate($tenant, $request, $id){
         $returnres = new UniversalResponse();
         $returnres->statusres = true;
 
-        $getKelas = $this->GetKelasByName($tenant, $request->get('Grade'), $request->get('Rombel'));
-
-        if($id != null){
-            if($getKelas == null){
-                $returnres->statusres = false;
-                $returnres->msg = "Data not Found";
-            }else{
-                if($getKelas->IdKelas != $id){
-                    $returnres->statusres = false;
-                    $returnres->msg = "Data duplicate";
-                }
-            }
+        $getKelas = $this->GetKelasById($tenant, $id);
+        if($getKelas == null){
+            $returnres->statusres = false;
+            $returnres->msg = "Data not Found";
 
             return $returnres;
         }
 
-        if($getKelas != null){
+        $getDuplicateData = $this->GetKelasByName($tenant, $request->get('Grade'), $request->get('Rombel'));
+        if($getDuplicateData->IdKelas != $id){
             $returnres->statusres = false;
             $returnres->msg = "Data duplicate";
 
