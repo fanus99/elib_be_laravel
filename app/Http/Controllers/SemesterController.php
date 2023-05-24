@@ -29,7 +29,7 @@ class SemesterController extends BaseController
     public function GetById($id)
     {
         $data = $this->SemesterService->GetSemesterById($this->getuser->Tenant, $id);
-        return $this->ApiSuccessResponseGetFirst($data);
+        return $this->ApiSuccessResponseGetFirst(new SemesterResource($data));
     }
 
     public function create(SemesterDTo $request){

@@ -50,7 +50,7 @@ class BaseController extends Controller
     }
 
     public function ApiPostResponse($data, $message){
-        if($data->statusres == false){
+        if(!isset($data->statusres) == false){
             return $this->ApiFailedPostResponse($data);
         }
 

@@ -29,7 +29,7 @@ class SiswaController extends BaseController
     public function GetById($id)
     {
         $data = $this->SiswaService->GetSiswaById($this->getuser->Tenant, $id);
-        return $this->ApiSuccessResponseGetFirst($data);
+        return $this->ApiSuccessResponseGetFirst(new SiswaResource($data));
     }
 
     public function create(SiswaDTo $request){

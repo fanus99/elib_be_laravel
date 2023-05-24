@@ -29,7 +29,7 @@ class KelasController extends BaseController
     public function GetById($id)
     {
         $data = $this->kelasService->GetKelasById($this->getuser->Tenant, $id);
-        return $this->ApiSuccessResponseGetFirst($data);
+        return $this->ApiSuccessResponseGet(KelasResource::collection($data));
     }
 
     public function create(KelasDTo $request){
