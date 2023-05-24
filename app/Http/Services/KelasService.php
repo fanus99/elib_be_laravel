@@ -37,7 +37,7 @@ class KelasService
     }
 
     public function CreateKelas($tenant, $request){
-        $checkDuplicate = $this->CheckDuplicatePost($tenant, $request);
+        $checkDuplicate = $this->CheckDuplicateCreate($tenant, $request);
 
         if($checkDuplicate->statusres != true){
             return $checkDuplicate;
