@@ -63,7 +63,11 @@ class JWTService
 
     public function isValidRefreshToken($accessToken, $refreshToken){
         $IdUser = $this->getUserIdFromToken($accessToken);
-        $refreshToken = DB::table('Auth.AppRefreshToken')->where([['user',$IdUser],['RefreshToken',$refreshToken]])->first();
+        $refreshToken = DB::table('Auth.AppRefreshToken')
+                        ->where([
+                            ['user',$IdUser],
+                            ['RefreshToken',$refreshToken]])
+                        ->first();
 
         if(!$refreshToken){
             $returnres = new UniversalResponse();

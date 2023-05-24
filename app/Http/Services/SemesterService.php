@@ -26,12 +26,12 @@ class SemesterService
                 ->first();
     }
 
-    public function GetSemesterByName($tahunajaran, $semester, $rombel){
+    public function GetSemesterByName($tenant, $tahunajaran, $semester){
         return DB::table('Master.Semester')
                 ->where([
                     ['Tenant', $tenant],
-                    ['TahunAjaran',$grade],
-                    ['Semester',$rombel],
+                    ['TahunAjaran',$tahunajaran],
+                    ['Semester',$semester],
                 ])
                 ->first();
     }
