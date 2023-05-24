@@ -26,13 +26,18 @@ class SiswaService
                 ->first();
     }
 
-    public function GetSiswaByNIS($tenant, $nis){
-        return DB::table('Master.Siswa')
-                ->where([
-                    ['Tenant', $tenant],
-                    ['NIS',$nis],
-                ])
-                ->first();
+    public function GetSiswaByNIS($tenant, $nis, $id = 0){
+        $getData = DB::table('Master.Siswa')
+                    ->where([
+                        ['Tenant', $tenant],
+                        ['NIS',$nis],
+                    ]);
+
+        if($id != 0){
+            $getData->where('IdSiswa', '!=', $id);
+        }
+
+        return $getData->first();
     }
 
     public function CreateSiswa($tenant, $request){
@@ -75,20 +80,23 @@ class SiswaService
         }
 
         DB::table('Master.Siswa')
-              ->where('IdSiswa', $id)
-              ->update([
-                ['Nama' => $request->get('Nama')],
-                ['NIS' => $request->get('NIS')]
+            ->where('IdSiswa', $id)
+            ->update([
+                'Nama' => $request->get('Nama'),
+                'NIS' => $request->get('NIS')
             ]);
 
-        return $this->GetSiswaById($tenant, $id);
+        $checkDuplicate->data->Nama = $request->get('Nama');
+        $checkDuplicate->data->Rombel = $request->get('NIS');
+
+        return $checkDuplicate->data;
     }
 
-    public function CheckDuplicateUpdate($tenant, $request, $id = null){
+    public function CheckDuplicateUpdate($tenant, $request, $id){
         $returnres = new UniversalResponse();
         $returnres->statusres = true;
-        $getSiswa = $this->GetSiswaById($tenant, $id);
 
+        $getSiswa = $this->GetSiswaById($tenant, $id);
         if($getSiswa == null){
             $returnres->statusres = false;
             $returnres->msg = "Data not Found";
@@ -96,15 +104,16 @@ class SiswaService
             return $returnres;
         }
 
-        $getDuplicateData = $this->GetSiswaByNIS($tenant, $request->get('NIS'));
+        $getDuplicateData = $this->GetSiswaByNIS($tenant, $request->get('NIS'), $id);
 
-        if($getDuplicateData->IdSiswa != $id){
+        if($getDuplicateData != null){
             $returnres->statusres = false;
             $returnres->msg = "Data duplicate";
 
             return $returnres;
         }
 
+        $returnres->data = $getSiswa;
         return $returnres;
     }
 
@@ -115,7 +124,8 @@ class SiswaService
         $deleteData = DB::table('Master.Siswa')
                         ->where([
                             ['Tenant', $tenant],
-                            ['IdSiswa',$id]])
+                            ['IdSiswa',$id]
+                        ])
                         ->delete();
 
         if($deleteData == 0){

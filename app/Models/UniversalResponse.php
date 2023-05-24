@@ -7,4 +7,5 @@ class UniversalResponse
 {
     public $statusres;
     public $msg;
+    public $data;
 }

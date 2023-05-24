@@ -26,14 +26,19 @@ class SemesterService
                 ->first();
     }
 
-    public function GetSemesterByName($tenant, $tahunajaran, $semester){
-        return DB::table('Master.Semester')
-                ->where([
-                    ['Tenant', $tenant],
-                    ['TahunAjaran',$tahunajaran],
-                    ['Semester',$semester],
-                ])
-                ->first();
+    public function GetSemesterByName($tenant, $tahunajaran, $semester, $id = 0){
+        $getData = DB::table('Master.Semester')
+                    ->where([
+                        ['Tenant', $tenant],
+                        ['TahunAjaran',$tahunajaran],
+                        ['Semester',$semester],
+                    ]);
+
+        if($id != 0){
+            $getData->where('IdSemester', '!=', $id);
+        }
+
+        return $getData->first();
     }
 
     public function CreateSemester($tenant, $request){
@@ -76,20 +81,23 @@ class SemesterService
         }
 
         DB::table('Master.Semester')
-              ->where('IdSemester', $id)
-              ->update([
-                ['TahunAjaran' => $request->get('TahunAjaran')],
-                ['Semester' => $request->get('Semester')]
+            ->where('IdSemester', $id)
+            ->update([
+                'TahunAjaran' => $request->get('TahunAjaran'),
+                'Semester' => $request->get('Semester')
             ]);
 
-        return $this->GetSemesterById($tenant, $id);
+        $checkDuplicate->data->TahunAjaran = $request->get('TahunAjaran');
+        $checkDuplicate->data->Semester = $request->get('Semester');
+
+        return $checkDuplicate->data;
     }
 
     public function CheckDuplicateUpdate($tenant, $request, $id){
         $returnres = new UniversalResponse();
         $returnres->statusres = true;
-        $getSemester = $this->GetSemesterById($tenant, $id);
 
+        $getSemester = $this->GetSemesterById($tenant, $id);
         if($getSemester == null){
             $returnres->statusres = false;
             $returnres->msg = "Data not Found";
@@ -97,14 +105,16 @@ class SemesterService
             return $returnres;
         }
 
-        $getDuplicateData = $this->GetSemesterByName($tenant, $request->get('TahunAjaran'), $request->get('Semester'));
-        if($getDuplicateData->IdSemester != $id){
+        $getDuplicateData = $this->GetSemesterByName($tenant, $request->get('TahunAjaran'), $request->get('Semester'), $id);
+
+        if($getDuplicateData != null){
             $returnres->statusres = false;
             $returnres->msg = "Data duplicate";
 
             return $returnres;
         }
 
+        $returnres->data = $getSemester;
         return $returnres;
     }
 
@@ -115,7 +125,8 @@ class SemesterService
         $deleteData = DB::table('Master.Semester')
                         ->where([
                             ['Tenant', $tenant],
-                            ['IdSemester',$id]])
+                            ['IdSemester',$id]
+                        ])
                         ->delete();
 
         if($deleteData == 0){

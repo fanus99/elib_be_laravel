@@ -26,14 +26,19 @@ class KelasService
                 ->first();
     }
 
-    public function GetKelasByName($tenant, $grade, $rombel){
-        return DB::table('Master.Kelas')
-                ->where([
-                    ['Tenant', $tenant],
-                    ['Grade',$grade],
-                    ['Rombel',$rombel],
-                ])
-                ->first();
+    public function GetKelasByName($tenant, $grade, $rombel, $id = 0){
+        $getData = DB::table('Master.Kelas')
+                    ->where([
+                        ['Tenant', $tenant],
+                        ['Grade',$grade],
+                        ['Rombel',$rombel],
+                    ]);
+
+        if($id != 0){
+            $getData->where('IdKelas', '!=', $id);
+        }
+
+        return $getData->first();
     }
 
     public function CreateKelas($tenant, $request){
@@ -76,13 +81,16 @@ class KelasService
         }
 
         DB::table('Master.Kelas')
-              ->where('IdKelas', $id)
-              ->update([
-                ['Grade' => $request->get('Grade')],
-                ['Rombel' => $request->get('Rombel')]
+            ->where('IdKelas', $id)
+            ->update([
+                'Grade' => $request->get('Grade'),
+                'Rombel' => $request->get('Rombel')
             ]);
 
-        return $this->GetKelasById($tenant, $id);
+        $checkDuplicate->data->Grade = $request->get('Grade');
+        $checkDuplicate->data->Rombel = $request->get('Rombel');
+
+        return $checkDuplicate->data;
     }
 
     public function CheckDuplicateUpdate($tenant, $request, $id){
@@ -97,14 +105,16 @@ class KelasService
             return $returnres;
         }
 
-        $getDuplicateData = $this->GetKelasByName($tenant, $request->get('Grade'), $request->get('Rombel'));
-        if($getDuplicateData->IdKelas != $id){
+        $getDuplicateData = $this->GetKelasByName($tenant, $request->get('Grade'), $request->get('Rombel'), $id);
+
+        if($getDuplicateData != null){
             $returnres->statusres = false;
             $returnres->msg = "Data duplicate";
 
             return $returnres;
         }
 
+        $returnres->data = $getKelas;
         return $returnres;
     }
 
@@ -115,7 +125,8 @@ class KelasService
         $deleteData = DB::table('Master.Kelas')
                         ->where([
                             ['Tenant', $tenant],
-                            ['IdKelas',$id]])
+                            ['IdKelas',$id]
+                        ])
                         ->delete();
 
         if($deleteData == 0){

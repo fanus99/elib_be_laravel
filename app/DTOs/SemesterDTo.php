@@ -2,7 +2,7 @@
 
 namespace App\DTOs;
 
-final class KelasDTo extends FormRequest
+final class SemesterDTo extends FormRequest
 {
     public function rules()
     {
