@@ -40,6 +40,7 @@ class SiswaController extends BaseController
     public function update($id, SiswaDTo $request){
         $data = $this->SiswaService->UpdateSiswa($this->getuser->Tenant, $id, $request);
         return $this->ApiPostResponse($data, "Data Updated");
+        // return response()->json($data);
     }
 
     public function delete($id){

@@ -87,10 +87,7 @@ class SemesterService
                 'Semester' => $request->get('Semester')
             ]);
 
-        $checkDuplicate->data->TahunAjaran = $request->get('TahunAjaran');
-        $checkDuplicate->data->Semester = $request->get('Semester');
-
-        return $checkDuplicate->data;
+        return $this->GetSemesterById($tenant, $lastInsertId);
     }
 
     public function CheckDuplicateUpdate($tenant, $request, $id){
@@ -130,6 +127,36 @@ class SemesterService
                         ->delete();
 
         if($deleteData == 0){
+            $returnres->statusres = false;
+            $returnres->msg = "Data not found";
+        }
+
+        return $returnres;
+    }
+
+    public function checkSemesterActive($tenant){
+        return DB::table('Master.Semester')
+                ->where([['Tenant', $tenant], ['IsActive', true]])
+                ->first();
+    }
+
+    public function setSemesterActive($tenant,$id){
+        $returnres = new UniversalResponse();
+        $returnres->statusres = true;
+
+        DB::table('Master.Semester')
+            ->where([['IdSemester', '!=',$id],['Tenant', $tenant]])
+            ->update([
+                'IsActive' => false,
+            ]);
+
+        $setActive  = DB::table('Master.Semester')
+            ->where([['IdSemester', $id],['Tenant', $tenant]])
+            ->update([
+                'IsActive' => true,
+            ]);
+
+        if($setActive == 0){
             $returnres->statusres = false;
             $returnres->msg = "Data not found";
         }

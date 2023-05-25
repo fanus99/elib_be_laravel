@@ -52,6 +52,7 @@ $router->group(['middleware' => 'jwt.auth'], function () use ($router) {
             $router->post('/', ['uses' => 'SemesterController@create', 'as' => 'create']);
             $router->put('/{id}', ['uses' => 'SemesterController@update', 'as' => 'update']);
             $router->delete('/{id}', ['uses' => 'SemesterController@delete', 'as' => 'delete']);
+            $router->post('/SetSemesterAktif/{id}', ['uses' => 'SemesterController@setSemesterAktif', 'as' => 'setSemesterAktif']);
         });
     });
 });

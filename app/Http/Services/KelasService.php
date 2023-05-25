@@ -87,10 +87,7 @@ class KelasService
                 'Rombel' => $request->get('Rombel')
             ]);
 
-        $checkDuplicate->data->Grade = $request->get('Grade');
-        $checkDuplicate->data->Rombel = $request->get('Rombel');
-
-        return $checkDuplicate->data;
+        return $this->GetKelasById($tenant, $id);
     }
 
     public function CheckDuplicateUpdate($tenant, $request, $id){

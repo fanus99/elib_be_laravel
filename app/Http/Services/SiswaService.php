@@ -86,10 +86,7 @@ class SiswaService
                 'NIS' => $request->get('NIS')
             ]);
 
-        $checkDuplicate->data->Nama = $request->get('Nama');
-        $checkDuplicate->data->Rombel = $request->get('NIS');
-
-        return $checkDuplicate->data;
+        return $this->GetSiswaById($tenant, $id);
     }
 
     public function CheckDuplicateUpdate($tenant, $request, $id){

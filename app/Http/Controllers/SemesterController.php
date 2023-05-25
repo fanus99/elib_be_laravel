@@ -46,4 +46,14 @@ class SemesterController extends BaseController
         $data = $this->SemesterService->delete($this->getuser->Tenant, $id);
         return $this->ApiPostResponse($data, "Data Deleted");
     }
+
+    public function checkSemesterActive(){
+
+    }
+
+    public function setSemesterAktif($id){
+        $data = $this->SemesterService->setSemesterActive($this->getuser->Tenant, $id);
+        return $this->ApiPostResponse($data, "Data Updated");
+        // return response()->json($data);
+    }
 }
