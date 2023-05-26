@@ -55,5 +55,14 @@ $router->group(['middleware' => 'jwt.auth'], function () use ($router) {
             // $router->post('/asas/{id}', ['uses' => 'SemesterController@setSemesterAktif', 'as' => 'setSemesterAktif']);
             // $router->get('/aktif', ['uses' => 'SemesterController@checkSemesterActive', 'as' => 'checkSemesterActive']);
         });
+
+        $router->group(['prefix' => 'buku'], function() use ($router)
+        {
+            $router->get('/', ['uses' => 'BukuController@GetAll', 'as' => 'GetAll']);
+            $router->get('/{id}', ['uses' => 'BukuController@GetById', 'as' => 'GetById']);
+            $router->post('/', ['uses' => 'BukuController@create', 'as' => 'create']);
+            $router->put('/{id}', ['uses' => 'BukuController@update', 'as' => 'update']);
+            $router->delete('/{id}', ['uses' => 'BukuController@delete', 'as' => 'delete']);
+        });
     });
 });
