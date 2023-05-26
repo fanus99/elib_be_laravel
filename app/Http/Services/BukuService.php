@@ -67,7 +67,35 @@ class BukuService
             'Lokasi' => $request->Lokasi,
             'Bahasa' => $request->Bahasa,
             'Tenant' => $tenant,
+        ], 'IdBuku');
 
+        return $this->GetBukuById($tenant, $lastInsertId);
+    }
+
+    public function CreateBukuUrl($tenant, $request){
+        $checkDuplicate = $this->CheckDuplicateCreate($tenant, $request);
+
+        if($checkDuplicate->statusres != true){
+            return $checkDuplicate;
+        }
+
+        $lastInsertId = DB::table('Master.Buku')->insertGetId([
+            'JudulBuku' => $request->get('JudulBuku'),
+            'Pengarang' => $request->get('Pengarang'),
+            'Edisi' => $request->get('Edisi'),
+            'ISBN' => $request->get('ISBN'),
+            'Penerbit' => $request->get('Penerbit'),
+            'TahunTerbit' => $request->get('TahunTerbit'),
+            'TempatTerbit' => $request->get('TempatTerbit'),
+            'Abstrak' => $request->get('Abstrakget'),
+            'DeskripsiFisik' => $request->get('DeskripsiFisik'),
+            'JumlahEksemplar' => $request->get('JumlahEksemplar'),
+            'TanggalMasuk' => $request->get('TanggalMasuk'),
+            'CoverBuku' => $request->get('CoverBuku'),
+            'TipeKoleksi' => $request->get('TipeKoleksi'),
+            'Lokasi' => $request->get('Lokasi'),
+            'Bahasa' => $request->get('Bahasa'),
+            'Tenant' => $tenant,
         ], 'IdBuku');
 
         return $this->GetBukuById($tenant, $lastInsertId);
@@ -92,7 +120,7 @@ class BukuService
         $returnres = new UniversalResponse();
         $returnres->statusres = true;
 
-        $getBuku = $this->GetBukuByISBN($tenant, $request->ISBN);
+        $getBuku = $this->GetBukuByISBN($tenant, $request->get('ISBN'));
 
         if($getBuku != null){
             $returnres->statusres = false;
@@ -105,6 +133,12 @@ class BukuService
     }
 
     public function UpdateBuku($tenant, $id, $request){
+        $checkDuplicate = $this->CheckDuplicateUpdate($tenant, $request, $id);
+
+        if($checkDuplicate->statusres != true){
+            return $checkDuplicate;
+        }
+
         $checkDuplicate = $this->CheckDuplicateUpdate($tenant, $request, $id);
 
         if($checkDuplicate->statusres != true){
@@ -140,6 +174,37 @@ class BukuService
         return $this->GetBukuById($tenant, $id);
     }
 
+    public function UpdateBukuUrl($tenant, $id, $request){
+        $checkDuplicate = $this->CheckDuplicateUpdate($tenant, $request, $id);
+
+        if($checkDuplicate->statusres != true){
+            return $checkDuplicate;
+        }
+
+        DB::table('Master.Buku')
+            ->where('IdBuku', $id)
+            ->update([
+                'JudulBuku' => $request->get('JudulBuku'),
+                'Pengarang' => $request->get('Pengarang'),
+                'Edisi' => $request->get('Edisi'),
+                'ISBN' => $request->ISBN,
+                'Penerbit' => $request->get('Penerbit'),
+                'TahunTerbit' => $request->get('TahunTerbit'),
+                'TempatTerbit' => $request->get('TempatTerbit'),
+                'Abstrak' => $request->get('Abstrak'),
+                'DeskripsiFisik' => $request->get('DeskripsiFisik'),
+                'JumlahEksemplar' => $request->get('JumlahEksemplar'),
+                'TanggalMasuk' => $request->get('TanggalMasuk'),
+                'CoverBuku' => $request->get('CoverBuku'),
+                'TipeKoleksi' => $request->get('TipeKoleksi'),
+                'Lokasi' => $request->get('Lokasi'),
+                'Bahasa' => $request->get('Bahasa'),
+                'Tenant' => $tenant,
+            ]);
+
+        return $this->GetBukuById($tenant, $id);
+    }
+
     public function CheckDuplicateUpdate($tenant, $request, $id){
         $returnres = new UniversalResponse();
         $returnres->statusres = true;
@@ -152,7 +217,7 @@ class BukuService
             return $returnres;
         }
 
-        $getDuplicateData = $this->GetBukuByISBN($tenant, $request->ISBN, $id);
+        $getDuplicateData = $this->GetBukuByISBN($tenant, $request->get('ISBN'), $id);
 
         if($getDuplicateData != null){
             $returnres->statusres = false;
