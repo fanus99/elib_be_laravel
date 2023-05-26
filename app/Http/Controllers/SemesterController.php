@@ -48,7 +48,8 @@ class SemesterController extends BaseController
     }
 
     public function checkSemesterActive(){
-
+        $data = $this->SemesterService->checkSemesterActive($this->getuser->Tenant);
+        return $this->ApiSuccessResponseGetFirst(new SemesterResource($data));
     }
 
     public function setSemesterAktif($id){

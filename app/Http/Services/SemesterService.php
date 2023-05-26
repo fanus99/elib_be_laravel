@@ -87,7 +87,7 @@ class SemesterService
                 'Semester' => $request->get('Semester')
             ]);
 
-        return $this->GetSemesterById($tenant, $lastInsertId);
+        return $this->GetSemesterById($tenant, $id);
     }
 
     public function CheckDuplicateUpdate($tenant, $request, $id){
@@ -159,9 +159,10 @@ class SemesterService
         if($setActive == 0){
             $returnres->statusres = false;
             $returnres->msg = "Data not found";
+            return $returnres;
         }
 
-        return $returnres;
+        return $this->checkSemesterActive($tenant);
     }
 
 }
