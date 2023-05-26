@@ -11,6 +11,7 @@ class PeminjamanResource extends JsonResource
             'IdPeminjaman' => $this->IdPeminjaman,
             'TanggalPinjam' => $this->TanggalPinjam,
             'BatasPengembalian' => $this->BatasPengembalian,
+            'TanggalPengembalian' => $this->TanggalPengembalian,
             'Siswa' => $this->Siswa,
             'Buku' => $this-> Buku,
             'created_at' => $this->created_at,
