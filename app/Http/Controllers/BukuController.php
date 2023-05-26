@@ -5,24 +5,24 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use App\DTOs\BukuDTo;
-use App\Http\Services\BukuService;
+use App\Http\Services\TransaksiService;
 use App\Models\BukuResource;
 
-class BukuController extends BaseController
+class TransaksiController extends BaseController
 {
     private $getuser;
-    private $BukuService;
+    private $TransaksiService;
 
 
-    public function __construct(BukuService $BukuService, Request $request)
+    public function __construct(TransaksiService $TransaksiService, Request $request)
     {
         $this->getuser = $request->auth;
-        $this->BukuService = $BukuService;
+        $this->TransaksiService = $TransaksiService;
     }
 
     public function GetAll()
     {
-        $data = $this->BukuService->GetAll($this->getuser->Tenant);
+        $data = $this->TransaksiService->GetAll($this->getuser->Tenant);
         return $this->ApiSuccessResponseGet(BukuResource::collection($data));
     }
 

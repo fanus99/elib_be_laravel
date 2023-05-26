@@ -65,4 +65,17 @@ $router->group(['middleware' => 'jwt.auth'], function () use ($router) {
             $router->delete('/{id}', ['uses' => 'BukuController@delete', 'as' => 'delete']);
         });
     });
+    $router->group(['prefix' => 'transaksi'], function() use ($router)
+    {
+        $router->group(['prefix' => 'peminjaman'], function() use ($router)
+        {
+            $router->get('/', ['uses' => 'TransaksiController@GetAll', 'as' => 'GetAll']);
+            $router->get('/{id}', ['uses' => 'TransaksiController@GetById', 'as' => 'GetById']);
+            $router->post('/', ['uses' => 'TransaksiController@create', 'as' => 'create']);
+            $router->put('/{id}', ['uses' => 'TransaksiController@update', 'as' => 'update']);
+            $router->delete('/{id}', ['uses' => 'TransaksiController@delete', 'as' => 'delete']);
+            $router->put('/pengembalian/{id}', ['uses' => 'TransaksiController@pengembalian', 'as' => 'pengembalian']);
+        });
+    });
+
 });
