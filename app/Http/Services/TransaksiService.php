@@ -34,11 +34,13 @@ class TransaksiService
                 ->leftjoin('Master.Buku', 'Master.Buku.IdBuku', 'Transaction.Peminjaman.Buku')
                 ->select(
                     'Transaction.Peminjaman.IdPeminjaman',
-                    'Master.Siswa.Nama',
-                    'Master.Buku.JudulBuku',
+                    'Master.Siswa.Nama  as Siswa',
+                    'Master.Buku.JudulBuku as Buku',
                     'Transaction.Peminjaman.TanggalPinjam',
                     'Transaction.Peminjaman.BatasPengembalian',
-                    'Transaction.Peminjaman.TanggalPengembalian'
+                    'Transaction.Peminjaman.TanggalPengembalian',
+                    'Transaction.Peminjaman.created_at',
+                    'Transaction.Peminjaman.updated_at',
                 )->where([['Transaction.Peminjaman.Tenant', $tenant], ['IdPeminjaman',$id]])
                 ->first();
     }
