@@ -74,7 +74,7 @@ class TransaksiService
         $returnres = new UniversalResponse();
         $returnres->statusres = true;
 
-        $deleteData = DB::table('Master.Peminjaman')
+        $deleteData = DB::table('Transaction.Peminjaman')
                         ->where([
                             ['Tenant', $tenant],
                             ['IdPeminjaman',$id]
