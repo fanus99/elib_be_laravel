@@ -64,6 +64,13 @@ $router->group(['middleware' => 'jwt.auth'], function () use ($router) {
             $router->put('/{id}', ['uses' => 'BukuController@update', 'as' => 'update']);
             $router->delete('/{id}', ['uses' => 'BukuController@delete', 'as' => 'delete']);
         });
+
+        $router->group(['prefix' => 'file'], function() use ($router)
+        {
+            $router->post('/upload', ['uses' => 'UploadController@upload', 'as' => 'upload']);
+            $router->post('/delete', ['uses' => 'UploadController@delete', 'as' => 'delete']);
+        });
+
     });
     $router->group(['prefix' => 'transaksi'], function() use ($router)
     {
