@@ -49,7 +49,7 @@ final class BukuDTo extends FormRequest
             'Lokasi' => [
                 'required',
             ],
-            'bahasa' => [
+            'Bahasa' => [
                 'required',
             ],
         ];
