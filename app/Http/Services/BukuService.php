@@ -87,7 +87,7 @@ class BukuService
             'Penerbit' => $request->get('Penerbit'),
             'TahunTerbit' => $request->get('TahunTerbit'),
             'TempatTerbit' => $request->get('TempatTerbit'),
-            'Abstrak' => $request->get('Abstrakget'),
+            'Abstrak' => $request->get('Abstrak'),
             'DeskripsiFisik' => $request->get('DeskripsiFisik'),
             'JumlahEksemplar' => $request->get('JumlahEksemplar'),
             'TanggalMasuk' => $request->get('TanggalMasuk'),
