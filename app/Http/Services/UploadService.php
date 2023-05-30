@@ -13,6 +13,7 @@ class UploadService
 {
     public function upload($request)
     {
+        // return $request->file('fileUpload');
         $original_filename = $request->file('fileUpload')->getClientOriginalName();
         $original_filename_arr = explode('.', $original_filename);
         $file_ext = end($original_filename_arr);
