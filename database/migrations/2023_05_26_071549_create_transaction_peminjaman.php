@@ -17,9 +17,9 @@ return new class extends Migration
             $table->timestamp('BatasPengembalian');
             $table->timestamp('TanggalPengembalian')->nullable();;
             $table->integer('Siswa')->unsigned();
-            $table->foreign('Siswa')->references('IdSiswa')->on('Master.Siswa');
+            $table->foreign('Siswa')->references('IdSiswa')->on('Master.Siswa')->onDelete('cascade');
             $table->integer('Buku')->unsigned();
-            $table->foreign('Buku')->references('IdBuku')->on('Master.Buku');
+            $table->foreign('Buku')->references('IdBuku')->on('Master.Buku')->onDelete('cascade');
             $table->integer('Tenant')->unsigned();
             $table->foreign('Tenant')->references('IdTenand')->on('Auth.AppTenant');
             $table->timestamp('created_at')->useCurrent();

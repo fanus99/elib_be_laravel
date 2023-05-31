@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('ISBN', 30);
             $table->string('Penerbit', 100);
             $table->string('TahunTerbit', 4);
-            $table->string('TempatTerbit', 4);
-            $table->string('Abstrak', 30);
-            $table->string('DeskripsiFisik', 30);
+            $table->string('TempatTerbit', 100);
+            $table->string('Abstrak', 250);
+            $table->string('DeskripsiFisik', 100);
             $table->integer('JumlahEksemplar')->default(1);
             $table->timestamp('TanggalMasuk')->useCurrent();
             $table->string('CoverBuku', 250);

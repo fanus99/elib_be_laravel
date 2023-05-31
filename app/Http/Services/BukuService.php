@@ -187,7 +187,7 @@ class BukuService
                 'JudulBuku' => $request->get('JudulBuku'),
                 'Pengarang' => $request->get('Pengarang'),
                 'Edisi' => $request->get('Edisi'),
-                'ISBN' => $request->ISBN,
+                'ISBN' => $request->get('ISBN'),
                 'Penerbit' => $request->get('Penerbit'),
                 'TahunTerbit' => $request->get('TahunTerbit'),
                 'TempatTerbit' => $request->get('TempatTerbit'),
